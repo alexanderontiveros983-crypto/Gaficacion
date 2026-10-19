@@ -1,46 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Inspector del DOM</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="dom-inspector.css">
-</head>
-<body>
-<header class="barra">
-  <a class="logo" href="index.html#inicio">Lienzo vivo</a>
-  <button class="burger" aria-label="Abrir menú" aria-expanded="false">☰</button>
-  <nav id="menu">
-    <a href="index.html#inicio">Inicio</a>
-    <a href="index.html#canvas">Canvas</a>
-    <a href="index.html#p5">p5.js</a>
-    <a href="dom-inspector.html">Inspector DOM</a>
-    <span class="grupo">Proyectos:</span>
-    <a href="index.html#rana">Rana</a>
-    <a href="index.html#conejo">Dientes de conejo</a>
-    <a href="index.html#cena">¿Qué hay de cena?</a>
-    <a href="index.html#nevado">Día nevado soleado</a>
-    <a href="index.html#muneco">Muñeco de nieve</a>
-  </nav>
-</header>
+Lienzo vivo ☰
+Inicio Canvas p5.js Inspector DOM Proyectos: Rana Dientes de conejo ¿Qué hay de cena? Día nevado soleado Muñeco de nieve El sol que explota Nubes que se separan Estrella fugaz
+Inspector del DOM
+El DOM (Document Object Model) es el árbol de etiquetas que el navegador construye a partir del HTML. La raíz es <html>, que se divide en <head> (metadatos) y <body> (contenido visible). Elige una página para ver su árbol; haz clic en un nodo para abrir o cerrar sus hijos.
 
-<main class="inspector">
-  <h1>Inspector del DOM</h1>
-  <p>El DOM (Document Object Model) es el árbol de etiquetas que el navegador construye a partir del HTML. La raíz es <code>&lt;html&gt;</code>, que se divide en <code>&lt;head&gt;</code> (metadatos) y <code>&lt;body&gt;</code> (contenido visible). Elige una página para ver su árbol; haz clic en un nodo para abrir o cerrar sus hijos.</p>
-  <div class="controles">
-    <div id="pestanas" role="tablist" aria-label="Páginas del sitio"></div>
-    <button id="expandir">Expandir todo</button>
-    <button id="contraer">Contraer</button>
-  </div>
-  <p id="stats" class="stats" aria-live="polite"></p>
-  <div id="arbol" class="tree" aria-label="Árbol del DOM"></div>
-  <p class="leyenda"><span class="muestra sem"></span> Etiqueta semántica (header, nav, main, section, article, footer) <span class="muestra rec"></span> Recurso o script</p>
-</main>
-<footer>Hecho con HTML, CSS y JavaScript.</footer>
-<script src="dom-inspector.js"></script>
-</body>
-</html>
+Expandir todo Contraer
+Etiqueta semántica (header, nav, main, section, article, footer) Recurso o script
+
+Hecho con HTML, CSS y JavaScript.
