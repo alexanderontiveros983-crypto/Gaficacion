@@ -1,5 +1,6 @@
-// Cinco dibujos de Khan Academy adaptados a p5.js (modo instancia). Lienzo: 400x400.
-
+/ Dibujos de Khan Academy adaptados a p5.js (modo instancia). Lienzo: 400x400.
+// ===== ENTREGA 1 =====
+ 
 // 1. RANA
 function rana(p) {
   let lengua = 0;
@@ -28,7 +29,7 @@ function rana(p) {
     p.fill(47, 158, 91); p.ellipse(110, 340, 90, 40); p.ellipse(290, 340, 90, 40); // patas
   };
 }
-
+ 
 // 2. DIENTES DE CONEJO
 function conejo(p) {
   let mordida = 0;
@@ -55,7 +56,7 @@ function conejo(p) {
     p.rect(182, 296 + mordida, 17, 48, 0, 0, 6, 6); p.rect(201, 296 + mordida, 17, 48, 0, 0, 6, 6); // dientes
   };
 }
-
+ 
 // 3. ¿QUÉ HAY DE CENA?
 function cena(p) {
   let plato = 0;
@@ -94,7 +95,7 @@ function cena(p) {
     p.textSize(26); p.fill(255); p.text(menus[plato], 200, 395);
   };
 }
-
+ 
 // 4. DÍA NEVADO SOLEADO
 function nevado(p) {
   const copos = [];
@@ -124,7 +125,7 @@ function nevado(p) {
     });
   };
 }
-
+ 
 // 5. MUÑECO DE NIEVE
 function muneco(p) {
   const copos = [];
@@ -157,5 +158,115 @@ function muneco(p) {
     p.fill(200, 40, 50); p.rect(165, 98 + sombrero, 70, 10);
     p.noStroke(); p.fill(255);
     copos.forEach(c => { p.ellipse(c.x, c.y, 5); c.y += c.v; if (c.y > 400) { c.y = -5; c.x = p.random(400); } });
+  };
+}
+ 
+// ===== ENTREGA 2 =====
+ 
+// 1. EL SOL QUE EXPLOTA
+function sol(p) {
+  let fase = 0, t = 0, particulas = [];
+  p.setup = () => p.createCanvas(400, 400);
+  p.mousePressed = () => {
+    if (fase !== 0 || p.mouseX < 0 || p.mouseX > 400 || p.mouseY < 0 || p.mouseY > 400) return;
+    fase = 1; t = 0; particulas = [];
+    for (let i = 0; i < 160; i++) {
+      const a = p.random(p.TWO_PI), v = p.random(1, 7);
+      particulas.push({ x: 200, y: 200, vx: p.cos(a) * v, vy: p.sin(a) * v, r: p.random(3, 9), c: p.random([[255, 220, 60], [255, 140, 30], [255, 70, 30]]) });
+    }
+  };
+  p.draw = () => {
+    p.background(15, 15, 45);
+    p.randomSeed(7); p.noStroke(); p.fill(255);
+    for (let i = 0; i < 60; i++) p.ellipse(p.random(400), p.random(400), p.random(1, 3)); // estrellas
+    if (fase === 0) {
+      const latido = p.sin(p.frameCount * 0.08) * 6;
+      p.fill(255, 200, 40, 60); p.ellipse(200, 200, 230 + latido * 2);
+      p.push(); p.translate(200, 200); p.rotate(p.frameCount * 0.01);
+      p.stroke(255, 190, 40); p.strokeWeight(5);
+      for (let i = 0; i < 16; i++) { p.rotate(p.TWO_PI / 16); p.line(95 + latido, 0, 125 + latido, 0); }
+      p.pop(); p.noStroke();
+      p.fill(255, 215, 50); p.ellipse(200, 200, 170 + latido);
+      p.fill(255, 150, 30); p.ellipse(200, 200, 120 + latido);
+      p.fill(0); p.ellipse(175, 190, 12, 16); p.ellipse(225, 190, 12, 16);
+      p.noFill(); p.stroke(0); p.strokeWeight(3); p.arc(200, 215, 50, 30, 0.2, p.PI - 0.2); // cara
+      p.noStroke(); p.fill(255); p.textAlign(p.CENTER); p.textSize(15); p.text("Haz clic para hacerlo explotar", 200, 385);
+    } else {
+      t++;
+      if (t < 12) { p.fill(255, 255, 255, 255 - t * 20); p.rect(0, 0, 400, 400); }   // destello
+      const onda = t * 6;
+      p.noFill(); p.stroke(255, 180, 60, p.max(0, 255 - t * 2.5)); p.strokeWeight(6); p.ellipse(200, 200, onda * 2);
+      p.stroke(255, 255, 255, p.max(0, 200 - t * 3)); p.strokeWeight(2); p.ellipse(200, 200, onda * 1.4);
+      p.noStroke();
+      particulas.forEach(q => {
+        q.x += q.vx; q.y += q.vy; q.vx *= 0.985; q.vy *= 0.985; q.r *= 0.99;
+        p.fill(q.c[0], q.c[1], q.c[2], p.max(0, 255 - t * 1.8)); p.ellipse(q.x, q.y, q.r * 2);
+      });
+      if (t < 25) { p.fill(255, 240, 150, 255 - t * 10); p.ellipse(200, 200, 170 + t * 8); }
+      if (t > 170) { fase = 0; }
+    }
+  };
+}
+ 
+// 2. NUBES QUE SE SEPARAN
+function nubes(p) {
+  let sep = 0, objetivo = 0;
+  function nube(x, y, s) {
+    p.noStroke(); p.fill(255);
+    p.ellipse(x, y, 110 * s, 60 * s); p.ellipse(x - 35 * s, y + 8 * s, 70 * s, 45 * s);
+    p.ellipse(x + 38 * s, y + 8 * s, 80 * s, 48 * s); p.ellipse(x - 12 * s, y - 20 * s, 60 * s, 55 * s); p.ellipse(x + 22 * s, y - 14 * s, 50 * s, 45 * s);
+  }
+  p.setup = () => p.createCanvas(400, 400);
+  p.mousePressed = () => { if (p.mouseX >= 0 && p.mouseX <= 400 && p.mouseY >= 0 && p.mouseY <= 400) objetivo = objetivo ? 0 : 1; };
+  p.draw = () => {
+    for (let y = 0; y < 400; y += 4) { p.noStroke(); p.fill(p.lerpColor(p.color(90, 170, 235), p.color(200, 232, 252), y / 400)); p.rect(0, y, 400, 4); }
+    sep = p.lerp(sep, objetivo, 0.06);
+    p.noStroke();
+    p.fill(255, 220, 60, 70 * sep); p.ellipse(200, 190, 190 * sep);
+    p.fill(255, 215, 50); p.ellipse(200, 190, 120 * sep);
+    p.fill(255, 200, 40, 255 * sep);
+    const flota = p.sin(p.frameCount * 0.03) * 4;
+    nube(200 - sep * 190, 190 + flota, 1.7);           // grandes
+    nube(200 + sep * 190, 190 - flota, 1.7);
+    nube(120 - sep * 140, 290 - flota, 1);             // pequeñas
+    nube(290 + sep * 140, 100 + flota, 1);
+    p.fill(30, 60, 100); p.textAlign(p.CENTER); p.textSize(15);
+    p.text(objetivo ? "Haz clic para juntarlas" : "Haz clic para separarlas", 200, 385);
+  };
+}
+ 
+// 3. ESTRELLA FUGAZ
+function estrella(p) {
+  const fijas = [];
+  let e = null;
+  function lanzar(x, y) {
+    const a = p.random(0.35, 0.7);                   // ángulo hacia abajo a la derecha
+    e = { x: x ?? p.random(-20, 200), y: y ?? p.random(10, 120), vx: p.cos(a) * 9, vy: p.sin(a) * 9, cola: [] };
+  }
+  p.setup = () => {
+    p.createCanvas(400, 400);
+    for (let i = 0; i < 80; i++) fijas.push({ x: p.random(400), y: p.random(300), r: p.random(1, 3), f: p.random(p.TWO_PI) });
+    lanzar();
+  };
+  p.mousePressed = () => { if (p.mouseX >= 0 && p.mouseX <= 400 && p.mouseY >= 0 && p.mouseY <= 400) lanzar(p.mouseX, p.mouseY); };
+  p.draw = () => {
+    for (let y = 0; y < 400; y += 4) { p.noStroke(); p.fill(p.lerpColor(p.color(8, 10, 35), p.color(45, 40, 95), y / 400)); p.rect(0, y, 400, 4); }
+    p.noStroke();
+    fijas.forEach(s => { p.fill(255, 255, 255, 140 + p.sin(p.frameCount * 0.05 + s.f) * 100); p.ellipse(s.x, s.y, s.r * 2); });
+    p.fill(250, 245, 210); p.ellipse(330, 70, 50); p.fill(12, 14, 40); p.ellipse(342, 64, 44);  // luna
+    if (e) {
+      e.cola.push({ x: e.x, y: e.y });
+      if (e.cola.length > 28) e.cola.shift();
+      e.cola.forEach((q, i) => { const k = i / e.cola.length; p.fill(255, 240, 180, k * 200); p.ellipse(q.x, q.y, k * 9); });
+      p.fill(255, 250, 220, 90); p.ellipse(e.x, e.y, 30);
+      p.fill(255); p.push(); p.translate(e.x, e.y); p.rotate(p.frameCount * 0.1);
+      p.beginShape();
+      for (let i = 0; i < 10; i++) { const r = i % 2 ? 4 : 10, a = i * p.PI / 5; p.vertex(p.cos(a) * r, p.sin(a) * r); }
+      p.endShape(p.CLOSE); p.pop();
+      e.x += e.vx; e.y += e.vy;
+      if (e.x > 440 || e.y > 440) { e = null; }
+    } else if (p.frameCount % 90 === 0) { lanzar(); }
+    p.fill(10, 12, 28); p.triangle(-20, 400, 90, 290, 200, 400); p.triangle(120, 400, 260, 270, 420, 400); // montañas
+    p.fill(255, 255, 255, 170); p.textAlign(p.CENTER); p.textSize(14); p.text("Haz clic para lanzar una estrella", 200, 388);
   };
 }
